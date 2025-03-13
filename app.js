@@ -1,3 +1,16 @@
+// Oculta a tela de carregamento após o carregamento da página
+window.addEventListener("load", () => {
+    const loadingScreen = document.getElementById("loadingScreen");
+    
+    // Adiciona um atraso para simular o carregamento
+    setTimeout(() => {
+        loadingScreen.style.opacity = "0"; // Faz a tela de carregamento desaparecer suavemente
+        setTimeout(() => {
+            loadingScreen.style.display = "none"; // Remove a tela de carregamento do DOM
+        }, 500); // Tempo para a transição de opacidade
+    }, 2000); // 2 segundos de simulação de carregamento
+});
+
 let nomes = [];
 
 function adicionarAmigo() {
