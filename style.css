@@ -1,0 +1,43 @@
+/* styles/base/_typography.css */
+:root {
+    --font-family: Roboto, Arial, sans-serif;
+    --primary-color: #337ab7;
+    --secondary-color: #5cb85c;
+  }
+  
+  body {
+    font-family: var(--font-family);
+    color: #333;
+  }
+  
+  /* styles/components/_buttons.css */
+  .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 4px;
+    text-align: center;
+    cursor: pointer;
+  }
+  
+  .btn:hover {
+    background-color: var(--secondary-color);
+  }
+  
+  /* styles/components/_navbar.css */
+  .navbar {
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #e7e7e7;
+  }
+  
+  .nav-link {
+    color: #333;
+    padding: 10px 15px;
+  }
+  
+  .nav-link:hover {
+    text-decoration: underline;
+  }
