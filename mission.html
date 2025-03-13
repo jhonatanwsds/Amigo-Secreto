@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Missão Secreta</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="mission-modal">
+        <h2>Missão Confidencial</h2>
+        <p id="missionText">Carregando detalhes da operação...</p>
+        <button onclick="window.close()">Missão Aceita!</button>
+    </div>
+
+    <script>
+        function decryptMission() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const encryptedData = urlParams.get('data');
+            
+            try {
+                const missionData = JSON.parse(atob(encryptedData));
+                document.getElementById('missionText').innerHTML = `
+                    Agente: <strong>${missionData.name}</strong><br>
+                    Seu alvo: <strong class="red">${missionData.target}</strong><br>
+                    Data: ${new Date(missionData.date).toLocaleDateString()}
+                `;
+            } catch {
+                document.getElementById('missionText').textContent = 
+                    'Missão corrompida! Reporte imediatamente.';
+            }
+        }
+        decryptMission();
+    </script>
+</body>
+</html>

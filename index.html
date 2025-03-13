@@ -3,45 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sistema de Amigo Secreto temático do anime Spy x Family">
+    <title>Operação: Amigo Secreto - Spy x Family</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto+Mono:wght@300;400;700&display=swap" rel="stylesheet">
-    <title>Amigo Secreto Digital</title>
 </head>
 <body>
-    <!-- Tela de carregamento -->
-    <div class="loading-screen" id="loadingScreen">
-        <div class="loading-spinner"></div>
-        <p>Carregando...</p>
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="anya-gif">
+            <img src="assets/Amigo-secreto.png" class="preloader-gif" alt="Carregando...">
+            <div class="loader-text">Inicializando Operação Strix...</div>
+        </div>
     </div>
 
-    <!-- Conteúdo principal -->
-    <main class="main-content">
-        <header class="header-banner">
-            <h1 class="main-title">Amigo Secreto</h1>
-            <img src="assets/amigo-secreto.png" alt="Imagem representativa de amigo secreto">
+    <!-- Container Principal -->
+    <div class="mission-container">
+        <!-- Cabeçalho -->
+        <header class="mission-header" aria-labelledby="main-heading">
+            <img src="assets/o-anime-spy-x-family-1702915374763_v2_615x300.png" class="main-logo" alt="Logo Spy x Family" width="400" height="150">
+            <h1 id="main-heading">Operação: Amigo Secreto</h1>
+            
+            <div class="characters" role="group" aria-label="Personagens principais">
+                <img src="assets/loid.png" class="loid" alt="Loid Forger" width="200" height="300">
+                <img src="assets/anya.png" class="anya" alt="Anya Forger" width="180" height="280">
+                <img src="assets/yor.png" class="yor" alt="Yor Forger" width="200" height="300">
+            </div>
         </header>
-        
-        <section class="input-section">
-            <h2 class="section-title">Digite o nome dos seus amigos</h2>
-            <div class="input-wrapper">
-                <input type="text" id="amigo" class="input-name" placeholder="Digite um nome">
-                <button class="button-add" onclick="adicionarAmigo()">Adicionar</button>
-            </div>
-           
-            <ul id="listaAmigos" class="name-list" aria-labelledby="listaAmigos" role="list"></ul>
-            <ul id="resultado" class="result-list" aria-live="polite"></ul>
 
-            <div class="button-container">
-                <button class="button-draw" onclick="sortearAmigo()" aria-label="Sortear amigo secreto">
-                    <img src="assets/play_circle_outline.png" alt="Ícone para sortear">
-                    Sortear amigo
-                </button>
-            </div>
-        </section>
-    </main>
+        <!-- Conteúdo Principal -->
+        <main class="control-panel">
+            <!-- Seção de Cadastro -->
+            <section class="input-section" aria-labelledby="recruit-heading">
+                <div class="spy-card">
+                    <h2 id="recruit-heading"><i class="fas fa-user-secret" aria-hidden="true"></i> Recrutar Agentes</h2>
+                    
+                    <div class="input-group">
+                        <label for="agent" class="sr-only">Nome do agente</label>
+                        <input type="text" 
+                               id="agent" 
+                               placeholder="Nome do agente"
+                               aria-describedby="input-instructions">
+                        <button class="add-btn" onclick="addAgent()" aria-label="Adicionar agente">
+                            <i class="fas fa-fingerprint" aria-hidden="true"></i> Adicionar
+                        </button>
+                    </div>
 
-    <script src="app.js" defer></script>
+                    <div class="agents-list" aria-live="polite">
+                        <h3><i class="fas fa-users" aria-hidden="true"></i> Agentes Recrutados</h3>
+                        <ul id="agents" role="list"></ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção de Resultados -->
+            <section class="result-section" aria-labelledby="results-heading">
+                <div class="spy-card">
+                    <h2 id="results-heading"><i class="fas fa-scroll" aria-hidden="true"></i> Relatório da Missão</h2>
+                    <ul id="results" role="list" aria-live="polite"></ul>
+                    
+                    <div class="action-buttons">
+                        <button class="execute-btn" 
+                                onclick="startMission()" 
+                                aria-label="Iniciar operação de sorteio">
+                            <i class="fas fa-play" aria-hidden="true"></i> Iniciar Operação
+                        </button>
+                        <button class="reset-btn" 
+                                onclick="resetMission()" 
+                                aria-label="Reiniciar sistema">
+                            <i class="fas fa-redo" aria-hidden="true"></i> Reiniciar
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção de Email -->
+            <section class="email-section">
+                <div class="spy-card">
+                    <h2><i class="fas fa-envelope"></i> Notificar Agentes</h2>
+                    <div class="input-group">
+                        <input type="email" id="playerEmail" placeholder="Seu email de agente">
+                        <button class="add-btn" onclick="sendSecretEmail()">
+                            <i class="fas fa-paper-plane"></i> Receber Missão
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Player de Música -->
+    <div class="music-player">
+        <audio id="backgroundMusic" loop>
+            <source src="assets/chaconne.mp3" type="audio/mpeg">
+            Seu navegador não suporta áudio.
+        </audio>
+        <button id="musicToggle" onclick="toggleMusic()">
+            <i class="fas fa-music"></i> 
+            <span>Trilha Sonora</span>
+        </button>
+        <input type="range" id="volumeControl" min="0" max="1" step="0.1" value="0.5" 
+               oninput="adjustVolume(this.value)">
+    </div>
+
+    <script src="app.js"></script>
 </body>
 </html>

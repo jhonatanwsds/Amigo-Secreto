@@ -1,55 +1,210 @@
-// Oculta a tela de carregamento após o carregamento da página
-window.addEventListener("load", () => {
-    const loadingScreen = document.getElementById("loadingScreen");
-    
-    // Adiciona um atraso para simular o carregamento
+// Sistema de Preloader
+window.addEventListener('load', () => {
     setTimeout(() => {
-        loadingScreen.style.opacity = "0"; // Faz a tela de carregamento desaparecer suavemente
-        setTimeout(() => {
-            loadingScreen.style.display = "none"; // Remove a tela de carregamento do DOM
-        }, 500); // Tempo para a transição de opacidade
-    }, 2000); // 2 segundos de simulação de carregamento
+        const preloader = document.getElementById('preloader');
+        if(preloader) {
+            preloader.style.opacity = '0';
+            setTimeout(() => preloader.remove(), 1000);
+        }
+    }, 3000);
 });
 
-let nomes = [];
+// Sistema Principal
+let agents = [];
 
-function adicionarAmigo() {
-    let input = document.getElementById("amigo"); // Pega o campo de input
-    let nome = input.value.trim(); // Remove espaços extras no início e fim
+// Adicione ao app.js
 
-    if (nome === "") { // Verifica se o campo está vazio
-        alert("Por favor, insira um nome válido!"); // Exibe um alerta se o campo estiver vazio
-        return; // Sai da função se o nome for vazio
+// Configuração do EmailJS (Você precisa criar conta gratuita em https://www.emailjs.com/)
+function initEmailService() {
+    emailjs.init('SEU_USER_ID_DO_EMAILJS'); // Substitua pelo seu ID
+}
+
+// Função para enviar emails
+async function sendSecretEmail() {
+    const email = document.getElementById('playerEmail').value;
+    
+    if(!validateEmail(email)) {
+        alert('Insira um email válido!');
+        return;
     }
 
-    nomes.push(nome); // Adiciona o nome ao array de nomes
-
-    atualizarLista(); // Atualiza a lista de amigos visível na tela
-
-    input.value = ""; // Limpa o campo de entrada para o próximo nome
-}
-
-function atualizarLista() {
-    let lista = document.getElementById("listaAmigos"); // Pega a <ul> onde vamos mostrar os nomes
-    lista.innerHTML = ""; // Limpa a lista antes de adicionar novos nomes
-
-    // Para cada nome no array, cria um <li> e adiciona na lista
-    nomes.forEach(nome => {
-        let li = document.createElement("li"); // Cria um novo item <li>
-        li.textContent = nome; // Define o texto do <li> com o nome
-        lista.appendChild(li); // Adiciona o <li> à <ul>
-    });
-}
-
-function sortearAmigo() {
-    if (nomes.length === 0) { // Verifica se não há nomes na lista
-        alert("Adicione pelo menos um nome antes de sortear!"); // Exibe alerta se a lista estiver vazia
-        return; // Sai da função se não houver nomes
+    const playerName = prompt('Identificação requerida:\nInsira seu nome de agente:');
+    
+    if(!agents.includes(playerName)) {
+        alert('Agente não encontrado!');
+        return;
     }
 
-    let indiceSorteado = Math.floor(Math.random() * nomes.length); // Gera um número aleatório para o índice
-    let nomeSorteado = nomes[indiceSorteado]; // Pega o nome sorteado
+    try {
+        const missionLink = generateSecretLink(playerName);
+        
+        const response = await emailjs.send('SEU_SERVICE_ID', 'SEU_TEMPLATE_ID', {
+            to_name: playerName,
+            to_email: email,
+            mission_link: missionLink
+        });
 
-    let resultado = document.getElementById("resultado"); // Pega o <ul> para exibir o resultado
-    resultado.innerHTML = `<li>🎉 O amigo secreto é: ${nomeSorteado} 🎉</li>`; // Exibe o nome sorteado
+        if(response.status === 200) {
+            alert('Missão enviada para seu email secreto! Verifique sua caixa de entrada.');
+        }
+    } catch (error) {
+        console.error('Falha na operação:', error);
+        alert('Erro ao enviar missão! Tente novamente.');
+    }
 }
+
+// Gerar link seguro
+function generateSecretLink(playerName) {
+    const missionData = {
+        name: playerName,
+        target: getAgentTarget(playerName),
+        date: new Date().toISOString()
+    };
+
+    const encryptedData = btoa(JSON.stringify(missionData));
+    return `${window.location.origin}/mission.html?data=${encryptedData}`;
+}
+
+// Função para validar email
+function validateEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+// Nova função para buscar o alvo
+function getAgentTarget(agentName) {
+    const agentIndex = agents.indexOf(agentName);
+    const shuffled = [...agents].sort(() => Math.random() - 0.5);
+    return shuffled[(agentIndex + 1) % shuffled.length];
+}
+
+function addAgent() {
+    const input = document.getElementById('agent');
+    const name = input.value.trim();
+    
+    if(name) {
+        if(!agents.includes(name)) {
+            agents.push(name);
+            input.value = '';
+            updateList();
+        } else {
+            alert('Agente já recrutado!');
+        }
+    } else {
+        alert('Insira o nome do agente!');
+    }
+}
+
+function updateList() {
+    const list = document.getElementById('agents');
+    if(list) {
+        list.innerHTML = agents.map((agent, index) => {
+            const safeName = agent.replace(/'/g, "\\'");
+            return `
+                <li>
+                    <span>${index + 1}. ${agent}</span>
+                    <button onclick="removeAgent('${safeName}')">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </li>
+            `;
+        }).join('');
+    }
+}
+
+function removeAgent(name) {
+    agents = agents.filter(a => a !== name);
+    updateList();
+}
+
+function startMission() {
+    if(agents.length < 2) {
+        alert('Mínimo de 2 agentes!');
+        return;
+    }
+    
+    try {
+        const results = shuffleAgents();
+        displayResults(results);
+    } catch(error) {
+        console.error('Erro no sorteio:', error);
+        alert('Falha na operação! Reinicie o sistema.');
+    }
+}
+
+// Algoritmo Fisher-Yates para embaralhamento
+function shuffleAgents() {
+    const shuffled = [...agents];
+    for(let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    
+    return agents.map((agent, index) => ({
+        from: agent,
+        to: shuffled[(index + 1) % shuffled.length]
+    }));
+}
+
+function displayResults(results) {
+    const container = document.getElementById('results');
+    if(container) {
+        container.innerHTML = results.map((result, index) => `
+            <li style="animation-delay: ${index * 0.1}s">
+                <i class="fas fa-user-secret"></i>
+                ${sanitizeHTML(result.from)} → ${sanitizeHTML(result.to)}
+                <i class="fas fa-handshake"></i>
+            </li>
+        `).join('');
+    }
+}
+
+function resetMission() {
+    agents = [];
+    updateList();
+    const results = document.getElementById('results');
+    if(results) results.innerHTML = '';
+}
+
+// Prevenção contra XSS
+function sanitizeHTML(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// Adicione ao JavaScript
+const backgroundMusic = document.getElementById('backgroundMusic');
+let isPlaying = false;
+
+function toggleMusic() {
+    const toggleButton = document.getElementById('musicToggle');
+    
+    if(isPlaying) {
+        backgroundMusic.pause();
+        toggleButton.classList.remove('playing');
+    } else {
+        backgroundMusic.play()
+            .then(() => {
+                toggleButton.classList.add('playing');
+            })
+            .catch(error => {
+                console.log('Reprodução precisa de interação do usuário');
+                toggleButton.onclick = () => {
+                    backgroundMusic.play();
+                    toggleButton.classList.add('playing');
+                    isPlaying = true;
+                }
+            });
+    }
+    isPlaying = !isPlaying;
+}
+
+function adjustVolume(volume) {
+    backgroundMusic.volume = volume;
+}
+
+// Iniciar automaticamente após interação do usuário
+document.addEventListener('click', function initialMusicStart() {
+    backgroundMusic.play();
+    document.removeEventListener('click', initialMusicStart);
+});
