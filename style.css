@@ -1,127 +1,205 @@
-/* Variáveis do Tema */
-:root {
+ /* style.css */
+ :root {
     --red: #e30613;
     --dark: #1a1a1a;
     --gold: #FFD700;
-    --bg-gradient: linear-gradient(45deg, #2d2d2d 0%, #1a1a1a 100%);
+    --bg-image: url('../assets/legiao_a8dPQ5f9N6hC.png');
     --spy-font: 'Segoe UI', system-ui;
 }
 
-/* Reset Global */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body {
-    font-family: var(--spy-font);
-    background: var(--bg-gradient);
-    color: white;
-    min-height: 100vh;
-    overflow-x: hidden;
-}
 
-/* Preloader Temático */
+/* Preloader Ajustado */
 #preloader {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--dark);
+    background: rgba(0,0,0,0.96);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 9999;
-    transition: opacity 1s ease;
+    transition: opacity 0.8s ease;
 }
 
-.anya-gif {
+.preloader-content {
     text-align: center;
-}
-
-.anya-gif img {
-    width: 200px;
-    height: auto;
-    filter: drop-shadow(0 0 15px var(--red));
-}
-
-.loader-text {
-    color: var(--gold);
-    font-size: 1.5em;
-    margin-top: 20px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-}
-
-/* Layout Principal */
-.mission-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 30px;
-}
-
-.mission-header {
-    text-align: center;
-    margin-bottom: 40px;
     position: relative;
 }
 
-.main-logo {
-    width: 400px;
-    margin: 0 auto 20px;
-    filter: drop-shadow(0 0 10px rgba(255,215,0,0.5));
+.anya-container {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    margin: 0 auto;
 }
 
-.characters {
+.preloader-gif {
+    width: 250px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.911));
+    z-index: 1;
+}
+
+.loader-text {
+    position: absolute;
+    top: calc(100% + 30px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    text-align: center;
+}
+
+.mission-steps {
+    color: var(--gold);
+    font-family: 'Courier New', monospace;
+    font-size: 1.4em;
+    text-shadow: 0 0 10px rgba(227, 6, 19, 0.5);
+    letter-spacing: 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.status-bar {
+    width: 200px;
+    height: 2px;
+    background: rgba(255,215,0,0.2);
+    margin: 15px auto;
+    position: relative;
+}
+
+.status-bar::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0%;
+    background: var(--gold);
+    animation: status-progress 3s linear forwards;
+}
+
+@keyframes status-progress {
+    0% { width: 0%; }
+    100% { width: 100%; }
+}
+
+/* Corpo principal */
+body {
+    font-family: var(--spy-font);
+    background: var(--bg-image) center/cover fixed;
+    color: #333;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+.mission-header {
+    position: relative;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .header-content {
     display: flex;
     justify-content: center;
-    gap: 30px;
-    margin-top: 30px;
+    align-items: center;
+    gap: 50px;
+    position: relative;
+  }
+  
+  .anya-3d-container {
+    width: 300px;
+    height: 300px;
+    position: relative;
+    margin-left: -80px; /* Ajuste para sobreposição */
+  }
+  
+  .main-logo {
+    width: 615px;
+    height: 300px;
+    object-fit: contain;
+    z-index: 1;
+  }
+  
+  /* Ajustes para mobile */
+  @media (max-width: 768px) {
+    .header-content {
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .anya-3d-container {
+      width: 200px;
+      height: 200px;
+      margin-left: 0;
+    }
+    
+    .main-logo {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    z-index: 0;
 }
 
-.characters img {
-    height: 150px;
-    transition: transform 0.3s ease;
+.mission-container {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 30px;
 }
 
-.characters img:hover {
-    transform: translateY(-10px);
-}
-
-/* Cartão de Operação */
 .spy-card {
-    background: rgba(0,0,0,0.8);
-    border: 2px solid var(--red);
+    background: rgba(255,255,255,0.95);
     border-radius: 15px;
     padding: 25px;
     margin: 20px 0;
-    backdrop-filter: blur(5px);
-    box-shadow: 0 0 20px rgba(227,6,19,0.2);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    border: 1px solid rgba(0,0,0,0.1);
 }
 
-/* Formulário */
 .input-group {
     display: flex;
     gap: 15px;
     margin: 20px 0;
 }
 
-#agent {
+#agent, #playerEmail {
     flex: 1;
     padding: 12px;
-    background: rgba(255,255,255,0.1);
-    border: 2px solid var(--gold);
-    color: white;
+    background: #fff;
+    border: 2px solid #ddd;
+    color: #333;
     border-radius: 8px;
     font-size: 1.1em;
+    transition: all 0.3s ease;
+}
+
+#agent:focus, #playerEmail:focus {
+    border-color: var(--red);
+    box-shadow: 0 0 8px rgba(227,6,19,0.2);
 }
 
 button {
@@ -130,9 +208,6 @@ button {
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 10px;
 }
 
 .add-btn {
@@ -142,177 +217,231 @@ button {
 
 .add-btn:hover {
     background: #c40510;
-    transform: scale(1.05);
-}
-
-/* Lista de Agentes */
-.agents-list {
-    margin-top: 25px;
-}
-
-#agents {
-    list-style: none;
-    max-height: 300px;
-    overflow-y: auto;
+    transform: translateY(-2px);
 }
 
 #agents li {
     padding: 12px;
     margin: 8px 0;
-    background: rgba(255,255,255,0.05);
+    background: #f8f9fa;
     border-radius: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    animation: slideIn 0.5s ease;
+    border: 1px solid #eee;
 }
 
-@keyframes slideIn {
-    from { transform: translateX(20px); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
-}
-
-/* Resultados */
-#results {
-    margin: 20px 0;
-}
-
-#results li {
+.music-player {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(255,255,255,0.9);
+    border-radius: 50px;
     padding: 15px;
-    margin: 10px 0;
-    background: rgba(255,255,255,0.05);
-    border-left: 4px solid var(--red);
-    animation: resultAppear 0.5s ease forwards;
-    opacity: 0;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
-@keyframes resultAppear {
-    to { opacity: 1; transform: translateX(0); }
-}
-
-/* Botões de Ação */
-.action-buttons {
-    display: flex;
-    gap: 15px;
-    margin-top: 25px;
-}
-
-.execute-btn {
-    background: var(--gold);
-    color: var(--dark);
-    font-weight: bold;
-}
-
-.reset-btn {
-    background: #444;
-    color: white;
-}
-
-/* Responsivo */
 @media (max-width: 768px) {
     .mission-container {
         padding: 15px;
     }
     
-    .main-logo {
-        width: 250px;
-    }
-    
-    .characters {
-        flex-direction: column;
-        align-items: center;
+    .spy-card {
+        padding: 20px;
     }
     
     .input-group {
         flex-direction: column;
     }
     
-    button {
-        width: 100%;
-        justify-content: center;
+    .mission-steps {
+        font-size: 1.1em;
+    }
+    
+    .status-bar {
+        width: 150px;
+    }
+} 
+/* Adicione estas regras na SEÇÃO DO HEADER */
+.mission-header {
+    position: relative;
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 20px 0;
+  }
+  
+  .header-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  .anya-3d-container {
+    width: 300px;
+    height: 300px;
+    position: relative;
+    margin-left: -40px;
+    z-index: 2;
+  }
+  
+  .main-logo {
+    width: 615px;
+    height: auto;
+    max-height: 300px;
+    object-fit: contain;
+    z-index: 1;
+    filter: drop-shadow(0 0 15px rgba(0,0,0,0.7));
+  }
+  
+  /* Ajuste para mobile */
+  @media (max-width: 768px) {
+    .header-content {
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .anya-3d-container {
+      width: 200px;
+      height: 200px;
+      margin-left: 0;
+      order: -1;
+    }
+    
+    .main-logo {
+      width: 100%;
+      max-width: 400px;
+    }
+  }
+  
+  .anya-3d-container {
+    position: absolute !important;
+    top: 20px;
+    right: 20px;
+    width: 120px !important;
+    height: 120px !important;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(255, 65, 108, 0.4);
+}
+
+/* Garantir que o canvas do Three.js respeite as dimensões */
+.anya-3d-container canvas {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain;
+}
+
+/* Header responsivo */
+.mission-header {
+    position: relative;
+    min-height: 150px;
+    padding-bottom: 20px;
+}
+
+.header-content {
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto;
+}
+/* Substitua as regras .anya-3d-container por: */
+.anya-3d-container {
+    position: absolute;
+    top: 50% !important;
+    right: 5%;
+    width: 180px !important;
+    height: 180px !important;
+    transform: translateY(-50%);
+    border-radius: 20px;
+    overflow: visible;
+    box-shadow: 0 0 25px rgba(227, 6, 19, 0.3);
+    background: rgba(0, 0, 0, 0.15);
+  }
+  
+  .anya-3d-container canvas {
+    transform: rotateX(-8deg) translateY(-10%) !important;
+    image-rendering: crisp-edges;
+    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.2));
+  }
+  
+  /* Adicione estas media queries */
+  @media (max-width: 768px) {
+    .anya-3d-container {
+      width: 140px !important;
+      height: 140px !important;
+      right: 50%;
+      transform: translate(50%, -50%);
+      top: 40%;
+    }
+    
+    .anya-3d-container canvas {
+      transform: rotateX(-5deg) translateY(-15%) !important;
+    }
+  }
+  
+  @media (min-width: 1200px) {
+    .anya-3d-container {
+      width: 220px !important;
+      height: 220px !important;
+      right: 10%;
+    }
+  }
+
+  .animation-controls {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+    justify-content: center;
+  }
+  
+  .anim-btn {
+    background: var(--gold);
+    color: var(--dark);
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    transition: all 0.3s ease;
+  }
+  
+  .anim-btn:hover {
+    background: #ffeb3b;
+    transform: scale(1.05);
+  }
+  .neon-title {
+    font-family: 'Bebas Neue', cursive; /* Fonte similar ao logo */
+    font-size: 4rem;
+    text-align: center;
+    color: #1a1a1a; /* Preto base */
+    text-shadow: 
+        0 0 5px #e30613, /* Efeito de neon vermelho */
+        0 0 10px #e30613,
+        0 0 20px #e30613,
+        0 0 40px #e30613,
+        0 0 80px #e30613;
+    position: relative;
+    margin: 1rem 0;
+    animation: neon-pulse 1.5s ease-in-out infinite alternate;
+}
+
+/* Efeito de pulsação */
+@keyframes neon-pulse {
+    from {
+        text-shadow: 
+            0 0 5px #e30613,
+            0 0 10px #e30613,
+            0 0 20px rgba(227,6,19,0.5),
+            0 0 40px rgba(227,6,19,0.3),
+            0 0 80px rgba(227,6,19,0.1);
+    }
+    to {
+        text-shadow: 
+            0 0 10px #e30613,
+            0 0 20px #e30613,
+            0 0 30px rgba(227,6,19,0.8),
+            0 0 50px rgba(227,6,19,0.6),
+            0 0 100px rgba(227,6,19,0.4);
     }
 }
 
-.character-img {
-    filter: drop-shadow(0 0 15px #e30613);
-    mix-blend-mode: luminosity;
-  }
 
-/* Adicione ao CSS */
-.email-section {
-    margin-top: 2rem;
-    animation: slideUp 0.5s ease;
-}
-
-#playerEmail {
-    background: rgba(255,255,255,0.1);
-    border: 2px solid var(--gold);
-    color: var(--white);
-    padding: 12px;
-    border-radius: 8px;
-    width: 100%;
-    margin-bottom: 1rem;
-}
-
-.fa-paper-plane {
-    color: var(--red);
-    margin-right: 8px;
-}
-
-/* Modal de Confirmação */
-.mission-modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(0,0,0,0.9);
-    padding: 2rem;
-    border-radius: 15px;
-    border: 2px solid var(--red);
-    text-align: center;
-    z-index: 1000;
-}
-/* Adicione ao CSS */
-.music-player {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: rgba(0,0,0,0.8);
-    padding: 15px;
-    border-radius: 50px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    backdrop-filter: blur(5px);
-    border: 2px solid #e30613;
-    z-index: 1000;
-}
-
-#musicToggle {
-    background: none;
-    border: none;
-    color: white;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 20px;
-    border-radius: 30px;
-    transition: all 0.3s ease;
-}
-
-#musicToggle:hover {
-    background: rgba(227, 6, 19, 0.3);
-}
-
-#volumeControl {
-    width: 100px;
-    height: 5px;
-    accent-color: #e30613;
-}
-
-/* Estilo quando a música está tocando */
-.playing {
-    color: #e30613 !important;
-    text-shadow: 0 0 10px #e30613;
-}

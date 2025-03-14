@@ -1,34 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Missão Secreta</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Missão Secreta - Spy x Family</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #1a1a1a; color: #fff; }
+        .container { max-width: 600px; margin: 20px auto; padding: 30px; }
+        .header { text-align: center; border-bottom: 3px solid #e30613; padding-bottom: 20px; }
+        .content { background: rgba(255,255,255,0.1); padding: 25px; border-radius: 15px; margin-top: 20px; }
+        .target { color: #FFD700; font-size: 1.4em; margin: 15px 0; }
+        .warning { color: #e30613; font-weight: bold; }
+        img { max-width: 200px; margin: 0 auto; display: block; }
+    </style>
 </head>
 <body>
-    <div class="mission-modal">
-        <h2>Missão Confidencial</h2>
-        <p id="missionText">Carregando detalhes da operação...</p>
-        <button onclick="window.close()">Missão Aceita!</button>
-    </div>
-
-    <script>
-        function decryptMission() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const encryptedData = urlParams.get('data');
+    <div class="container">
+        <div class="header">
+            <img src="https://exemplo.com/logo-spyxfamily.png" alt="Operação STRIX">
+            <h1>🕵️♀️ Missão Secreta 🕵️♂️</h1>
+        </div>
+        
+        <div class="content">
+            <p>Agente <strong>{{to_name}}</strong>,</p>
+            <p>Sua missão foi designada pelo Comando Central:</p>
             
-            try {
-                const missionData = JSON.parse(atob(encryptedData));
-                document.getElementById('missionText').innerHTML = `
-                    Agente: <strong>${missionData.name}</strong><br>
-                    Seu alvo: <strong class="red">${missionData.target}</strong><br>
-                    Data: ${new Date(missionData.date).toLocaleDateString()}
-                `;
-            } catch {
-                document.getElementById('missionText').textContent = 
-                    'Missão corrompida! Reporte imediatamente.';
-            }
-        }
-        decryptMission();
-    </script>
+            <div class="target">
+                🎯 Seu alvo: <strong>{{mission_target}}</strong>
+            </div>
+
+            <p class="warning">
+                !!! AVISO DE SEGURANÇA !!!<br>
+                Esta informação é CONFIDENCIAL. Qualquer vazamento resultará em medidas disciplinares.
+            </p>
+
+            <p>Data da Operação: {{current_date}}</p>
+            
+            <p>Boa sorte na execução da Operação STRIX!</p>
+        </div>
+    </div>
 </body>
 </html>
